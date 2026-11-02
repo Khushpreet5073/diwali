@@ -1,0 +1,1129 @@
+/* ================================================
+   DIWALI - THE FESTIVAL OF LIGHTS
+   Global Design System
+   ================================================ */
+
+:root {
+  /* Color Palette */
+  --royal-purple: #54218C;
+  --deep-indigo: #21134E;
+  --saffron: #FF9F1C;
+  --marigold: #FFB800;
+  --rani-pink: #F04492;
+  --magenta: #C72C91;
+  --peacock-blue: #078C9E;
+  --turquoise: #32C5C5;
+  --golden: #FFD76A;
+  --cream: #FFF2D5;
+  --warm-gold: #E8A92A;
+  --deep-purple: #0D0723;
+
+  /* Gradients */
+  --grad-hero: linear-gradient(135deg, #0D0723 0%, #21134E 25%, #54218C 50%, #C72C91 75%, #FF9F1C 100%);
+  --grad-gold: linear-gradient(90deg, #FFD76A, #FF9F1C, #FFD76A);
+  --grad-festive: linear-gradient(135deg, #54218C, #C72C91, #FF9F1C);
+  --grad-text: linear-gradient(135deg, #FFD76A 0%, #FF9F1C 40%, #FFD76A 70%, #E8A92A 100%);
+
+  /* Typography */
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-accent: 'Libre Baskerville', serif;
+
+  /* Spacing */
+  --section-padding: clamp(4rem, 10vw, 8rem);
+
+  /* Transitions */
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--deep-purple);
+  color: var(--cream);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--deep-indigo);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--saffron);
+  border-radius: 3px;
+}
+
+/* ================================================
+   LOADING SCREEN
+   ================================================ */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: radial-gradient(circle at 50% 40%, #1E0B45 0%, #120528 50%, #080214 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
+.loading-diya {
+  width: 90px;
+  height: 90px;
+  position: relative;
+  animation: diyaPulse 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 0 25px rgba(255, 183, 0, 0.6));
+}
+
+.loading-flame {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 36px;
+  background: radial-gradient(ellipse at bottom, #FFFFFF 0%, #FFD76A 35%, #FF9F1C 70%, transparent 100%);
+  border-radius: 50% 50% 20% 20%;
+  animation: flameFlicker 0.45s ease-in-out infinite alternate;
+  filter: blur(0.5px);
+  box-shadow: 0 0 20px #FF9F1C, 0 0 40px #FFD76A;
+}
+
+.loading-diya-body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 24px;
+  background: radial-gradient(ellipse at 50% 30%, #D44B3F, #C0392B 60%, #6E1212 100%);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 215, 106, 0.4);
+  box-shadow: 0 0 24px rgba(255, 159, 28, 0.6);
+}
+
+.loading-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  letter-spacing: 0.05em;
+  filter: drop-shadow(0 0 25px rgba(255, 183, 0, 0.5));
+}
+
+.loading-bar-container {
+  width: min(300px, 80vw);
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 106, 0.35);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FF9F1C 0%, #FFD76A 50%, #FFB800 80%, #FF9F1C 100%);
+  border-radius: 10px;
+  box-shadow: 0 0 14px rgba(255, 183, 0, 0.9), 0 0 28px rgba(255, 159, 28, 0.6);
+  transition: width 0.25s ease-out;
+}
+
+.loading-percentage {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  color: #FFD76A;
+  text-shadow: 0 0 12px rgba(255, 183, 0, 0.7);
+}
+
+.loading-status-msg {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 242, 213, 0.7);
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+  animation: pulseOpacity 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes pulseOpacity {
+  0% { opacity: 0.5; }
+  100% { opacity: 0.95; }
+}
+
+@keyframes diyaPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+/* ================================================
+   APP WRAPPER
+   ================================================ */
+#app-wrapper {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ================================================
+   HERO SECTION
+   ================================================ */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-canvas-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero-bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(84, 33, 140, 0.9) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(199, 44, 145, 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 80%, rgba(255, 159, 28, 0.5) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, rgba(240, 68, 146, 0.3) 0%, transparent 50%),
+    linear-gradient(180deg, #0D0723 0%, #1E0B45 20%, #3A1278 45%, #1E0B45 70%, #0D0723 100%);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 9rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 25px rgba(255, 183, 0, 0.55));
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-title span.word-diwali {
+  display: block;
+  color: transparent;
+  background: linear-gradient(135deg, #FFD76A 0%, #FF9F1C 30%, #F04492 60%, #FFD76A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 30px rgba(255, 159, 28, 0.7));
+}
+
+.hero-subtitle {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
+  color: rgba(255, 242, 213, 0.9);
+  letter-spacing: 0.05em;
+  max-width: 500px;
+  line-height: 1.6;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-punjabi {
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  color: rgba(255, 215, 106, 0.8);
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-cta-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: rgba(255, 159, 28, 0.12);
+  border: 1px solid rgba(255, 215, 106, 0.35);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--golden);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  margin-top: 0.5rem;
+}
+
+.hero-cta-hint:hover {
+  background: rgba(255, 159, 28, 0.25);
+  border-color: rgba(255, 215, 106, 0.8);
+  box-shadow: 0 0 20px rgba(255, 159, 28, 0.4);
+  transform: translateY(-2px);
+}
+
+.cta-sparkle {
+  color: #FF9F1C;
+  font-size: 0.85rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .hero-content {
+    align-items: flex-start;
+    text-align: left;
+    max-width: 640px;
+    margin-right: auto;
+    margin-left: max(3.5rem, 8vw);
+  }
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.7;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.scroll-mouse {
+  width: 24px;
+  height: 38px;
+  border: 2px solid rgba(255, 215, 106, 0.6);
+  border-radius: 12px;
+  position: relative;
+}
+
+.scroll-wheel {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: var(--golden);
+  border-radius: 2px;
+  animation: scrollWheel 2s ease-in-out infinite;
+}
+
+.scroll-text {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 215, 106, 0.6);
+  text-transform: uppercase;
+}
+
+/* ================================================
+   DIYA CORNER DECORATIONS
+   ================================================ */
+.diya-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.diya-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.diya-corner--bl { bottom: 2rem; left: 2rem; }
+.diya-corner--br { bottom: 2rem; right: 2rem; }
+.diya-corner--tl { top: 5rem; left: 1rem; transform: scale(0.7); }
+.diya-corner--tr { top: 5rem; right: 1rem; transform: scale(0.7); }
+
+/* ================================================
+   FIREWORKS CANVAS
+   ================================================ */
+.fireworks-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ================================================
+   FLOATING PARTICLES
+   ================================================ */
+.particles-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ================================================
+   MUSIC CONTROLLER
+   ================================================ */
+.music-controller {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(33, 19, 78, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 215, 106, 0.3);
+  border-radius: 50px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.music-controller:hover {
+  border-color: rgba(255, 159, 28, 0.6);
+  box-shadow: 0 8px 32px rgba(255, 159, 28, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+.music-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.music-bars {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 20px;
+}
+
+.music-bar {
+  width: 3px;
+  background: var(--golden);
+  border-radius: 2px;
+  transform-origin: bottom;
+}
+
+.music-bar:nth-child(1) { animation: musicBar 0.8s ease-in-out infinite; height: 8px; }
+.music-bar:nth-child(2) { animation: musicBar 0.8s ease-in-out infinite 0.15s; height: 14px; }
+.music-bar:nth-child(3) { animation: musicBar 0.8s ease-in-out infinite 0.3s; height: 10px; }
+.music-bar:nth-child(4) { animation: musicBar 0.8s ease-in-out infinite 0.45s; height: 16px; }
+
+.music-bar.muted {
+  animation: none;
+  height: 4px !important;
+  opacity: 0.3;
+}
+
+.music-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 242, 213, 0.8);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ================================================
+   KARMVEER SIGNATURE
+   ================================================ */
+.karmveer-signature {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(33, 19, 78, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 215, 106, 0.25);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: rgba(255, 215, 106, 0.85);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.karmveer-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--saffron);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ================================================
+   SECTIONS - GENERAL
+   ================================================ */
+.section {
+  padding: var(--section-padding) clamp(1rem, 5vw, 4rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 159, 28, 0.15);
+  border: 1px solid rgba(255, 159, 28, 0.4);
+  border-radius: 50px;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-text {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.7;
+  color: rgba(255, 242, 213, 0.8);
+  max-width: 600px;
+}
+
+/* ================================================
+   MAGIC OF DIWALI SECTION
+   ================================================ */
+.magic-section {
+  background: linear-gradient(180deg, #0D0723 0%, #1A0A3E 40%, #0D0723 100%);
+  position: relative;
+}
+
+.magic-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 50% 30% at 50% 0%, rgba(255, 159, 28, 0.1) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 30% at 50% 100%, rgba(84, 33, 140, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.magic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.magic-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 215, 106, 0.15);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.4s var(--ease-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.magic-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top, rgba(255, 159, 28, 0.08) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.magic-card:hover::before { opacity: 1; }
+
+.magic-card:hover {
+  border-color: rgba(255, 159, 28, 0.4);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(255, 159, 28, 0.15);
+}
+
+.magic-card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(255, 183, 0, 0.5));
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+.magic-card:nth-child(even) .magic-card-icon {
+  animation-delay: 0.5s;
+}
+
+.magic-card-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--golden);
+  margin-bottom: 0.75rem;
+}
+
+.magic-card-text {
+  font-size: 0.9rem;
+  color: rgba(255, 242, 213, 0.7);
+  line-height: 1.6;
+}
+
+/* ================================================
+   PUNJABI CELEBRATION SECTION
+   ================================================ */
+.punjabi-section {
+  background: linear-gradient(135deg, #1A0A3E 0%, #2D1060 30%, #54218C 60%, #1A0A3E 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.punjabi-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD76A' fill-opacity='0.04'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.punjabi-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .punjabi-content { grid-template-columns: 1fr; }
+}
+
+.punjabi-text-side {
+  position: relative;
+  z-index: 2;
+}
+
+.punjabi-greeting {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: rgba(255, 215, 106, 0.9);
+  font-style: italic;
+  line-height: 1.7;
+  margin: 1.5rem 0;
+  border-left: 3px solid var(--saffron);
+  padding-left: 1rem;
+}
+
+.punjabi-greeting-2 {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: rgba(255, 242, 213, 0.7);
+  line-height: 1.8;
+  font-style: italic;
+}
+
+.dhol-visual-side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.dhol-wrapper {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-smooth);
+}
+
+.dhol-wrapper:hover {
+  transform: scale(1.03);
+}
+
+.dhol-image {
+  max-width: 380px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 20px 60px rgba(255, 159, 28, 0.4));
+  transition: filter 0.3s;
+  position: relative;
+  z-index: 2;
+}
+
+.dhol-image.dhol-hit {
+  animation: dholBeat 0.3s ease-in-out;
+}
+
+.dhol-wrapper:hover .dhol-image {
+  filter: drop-shadow(0 20px 80px rgba(255, 159, 28, 0.7));
+}
+
+.dhol-glow-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 159, 28, 0.15) 0%, transparent 70%);
+  animation: ringPulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.dhol-click-hint {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 215, 106, 0.6);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.phulkari-pattern {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* ================================================
+   GREETING GENERATOR SECTION
+   ================================================ */
+.greeting-section {
+  background: linear-gradient(180deg, #0D0723 0%, #170828 50%, #0D0723 100%);
+  position: relative;
+}
+
+.greeting-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(240, 68, 146, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.greeting-container {
+  max-width: 700px;
+  margin: 3rem auto 0;
+  text-align: center;
+}
+
+.greeting-input-wrapper {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.greeting-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.9rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 215, 106, 0.3);
+  border-radius: 50px;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.greeting-input::placeholder {
+  color: rgba(255, 242, 213, 0.4);
+}
+
+.greeting-input:focus {
+  border-color: var(--saffron);
+  box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.15);
+}
+
+.btn-generate {
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, var(--saffron), var(--marigold));
+  border: none;
+  border-radius: 50px;
+  color: var(--deep-purple);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
+  box-shadow: 0 4px 20px rgba(255, 159, 28, 0.3);
+}
+
+.btn-generate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 159, 28, 0.5);
+}
+
+.greeting-card {
+  background: linear-gradient(135deg, rgba(84, 33, 140, 0.4), rgba(199, 44, 145, 0.2));
+  border: 1px solid rgba(255, 215, 106, 0.3);
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  overflow: hidden;
+  animation: cardReveal 0.6s var(--ease-bounce) forwards;
+}
+
+.greeting-card::before {
+  content: '🪔';
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  font-size: 2rem;
+  filter: drop-shadow(0 0 10px rgba(255, 183, 0, 0.5));
+}
+
+.greeting-card::after {
+  content: '🪔';
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  filter: drop-shadow(0 0 10px rgba(255, 183, 0, 0.5));
+}
+
+.greeting-card-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  line-height: 1.6;
+  color: var(--cream);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.greeting-name {
+  color: var(--golden);
+  font-weight: 700;
+  font-style: normal;
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 2rem;
+  background: #25D366;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s var(--ease-smooth);
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+  background: #22c55e;
+}
+
+/* ================================================
+   GRAND FINALE SECTION
+   ================================================ */
+.finale-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #0D0723 0%, #0A0520 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.finale-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(84, 33, 140, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.finale-content {
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  padding: 2rem;
+}
+
+.finale-subtitle {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.finale-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 12vw, 10rem);
+  font-weight: 900;
+  line-height: 0.85;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 40px rgba(255, 183, 0, 0.4));
+  margin-bottom: 3rem;
+}
+
+.finale-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, var(--royal-purple), var(--magenta));
+  border: 2px solid rgba(255, 215, 106, 0.5);
+  border-radius: 60px;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s var(--ease-smooth);
+  box-shadow: 0 10px 40px rgba(84, 33, 140, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.finale-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 215, 106, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.finale-btn:hover::before { opacity: 1; }
+
+.finale-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(199, 44, 145, 0.5);
+  border-color: rgba(255, 215, 106, 0.8);
+}
+
+.finale-btn-icon {
+  font-size: 1.5rem;
+  animation: rocketLaunch 1.5s ease-in-out infinite;
+}
+
+/* ================================================
+   DIYA IMAGE CARD
+   ================================================ */
+.diya-image-card {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 159, 28, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.diya-image-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s var(--ease-smooth);
+}
+
+.diya-image-card:hover img {
+  transform: scale(1.03);
+}
+
+.diya-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(13, 7, 35, 0.6), transparent 40%);
+}
+
+/* ================================================
+   ANIMATIONS
+   ================================================ */
+@keyframes titleReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes textGlow {
+  from { filter: drop-shadow(0 0 10px rgba(255, 183, 0, 0.3)); }
+  to { filter: drop-shadow(0 0 30px rgba(255, 183, 0, 0.8)); }
+}
+
+@keyframes flameFlicker {
+  from { transform: translateX(-50%) scaleY(1) skewX(-3deg); opacity: 0.9; }
+  to { transform: translateX(-50%) scaleY(1.15) skewX(3deg); opacity: 1; }
+}
+
+@keyframes musicBar {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.3); }
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+@keyframes scrollWheel {
+  0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(16px); opacity: 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
+}
+
+@keyframes dholBeat {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05) rotate(-3deg); }
+  75% { transform: scale(0.98) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes rocketLaunch {
+  0%, 100% { transform: translateY(0) rotate(-45deg); }
+  50% { transform: translateY(-5px) rotate(-45deg); }
+}
+
+/* ================================================
+   RANGOLI DECORATIONS
+   ================================================ */
+.rangoli-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.rangoli-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 106, 0.4), transparent);
+}
+
+.rangoli-center {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 10px rgba(255, 183, 0, 0.5));
+}
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+@media (max-width: 768px) {
+  .hero-title { font-size: clamp(2.5rem, 12vw, 5rem); }
+  .music-controller { top: 1rem; right: 1rem; padding: 0.5rem 0.8rem; }
+  .music-label { display: none; }
+  .karmveer-signature { font-size: 0.65rem; padding: 0.4rem 0.8rem; }
+  .diya-corner--tl, .diya-corner--tr { display: none; }
+  .magic-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: clamp(2rem, 14vw, 3.5rem); }
+  .greeting-input-wrapper { flex-direction: column; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

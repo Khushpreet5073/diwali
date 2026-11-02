@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="flame" cx="50%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="#FFD76A"/>
+      <stop offset="50%" stop-color="#FF9F1C"/>
+      <stop offset="100%" stop-color="#FF4500" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Diya body -->
+  <ellipse cx="50" cy="72" rx="35" ry="16" fill="#C0392B"/>
+  <ellipse cx="50" cy="68" rx="32" ry="13" fill="#E74C3C"/>
+  <!-- Flame -->
+  <path d="M50 60 C46 52 43 38 50 26 C57 38 54 52 50 60Z" fill="url(#flame)"/>
+  <!-- Flame tip -->
+  <ellipse cx="50" cy="28" rx="3" ry="5" fill="white" opacity="0.9"/>
+</svg>
