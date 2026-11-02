@@ -263,7 +263,6 @@ export default function EntryScreen({
     // 1. Immediately configure audio
     if (withSound) {
       audioManager.setEnabled(true);
-      audioManager.startBgMusic('/assets/audio/diwali-background.mp3');
     } else {
       audioManager.setEnabled(false);
     }
@@ -545,7 +544,7 @@ export default function EntryScreen({
             id="btn-enter-with-sound"
             icon={<SoundOnIcon />}
             label="ENTER WITH SOUND"
-            sub="Experience the music, dhol and fireworks."
+            sub="Experience the dhol and fireworks."
             accent="#FF9F1C"
             glow="rgba(255,159,28,0.4)"
             gradient="linear-gradient(135deg, rgba(255,159,28,0.22), rgba(199,44,145,0.18))"

@@ -20,7 +20,6 @@ const ASSETS = {
   audio: {
     dhol:        '/assets/audio/dhol-beat.mp3',
     firecracker: '/assets/audio/firecracker.mp3',
-    background:  '/assets/audio/diwali-background.mp3',
   },
 };
 
@@ -79,7 +78,7 @@ export default function App() {
   useEffect(() => {
     let mounted = true;
     let completedCount = 0;
-    const TOTAL_ITEMS = 6;
+    const TOTAL_ITEMS = 5;
 
     const notifyItemComplete = () => {
       if (!mounted) return;
@@ -100,32 +99,26 @@ export default function App() {
     }, 2200);
 
     async function loadAllAssets() {
-      // 1. Initialise background music audio element
-      audioManager.initBgMusic(ASSETS.audio.background);
-
-      // Essential track 1: background music ready
-      checkAudio(ASSETS.audio.background).then(notifyItemComplete);
-
-      // Essential track 2: Web fonts readiness
+      // Essential track 1: Web fonts readiness
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(notifyItemComplete).catch(notifyItemComplete);
       } else {
         notifyItemComplete();
       }
 
-      // Concurrent track 3: dhol beat sfx
+      // Concurrent track 2: dhol beat sfx
       audioManager.load('dhol', ASSETS.audio.dhol).then(notifyItemComplete);
 
-      // Concurrent track 4: firecracker sfx
+      // Concurrent track 3: firecracker sfx
       audioManager.load('firecracker', ASSETS.audio.firecracker).then(notifyItemComplete);
 
-      // Concurrent track 5: diya image
+      // Concurrent track 4: diya image
       checkImage(ASSETS.diya).then(ok => {
         if (mounted && ok) setAssets(prev => ({ ...prev, diya: ASSETS.diya }));
         notifyItemComplete();
       });
 
-      // Concurrent track 6: dhol image
+      // Concurrent track 5: dhol image
       checkImage(ASSETS.dhol).then(ok => {
         if (mounted && ok) setAssets(prev => ({ ...prev, dhol: ASSETS.dhol }));
         notifyItemComplete();

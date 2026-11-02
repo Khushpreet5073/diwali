@@ -1,18 +1,13 @@
 // Audio Manager - centralised audio control
-// Supports: sfx playback, background music, listener-based sync
+// Supports: sfx playback (dhol, firecracker) with listener-based sync
 
 class AudioManager {
   constructor() {
-    this.sounds = {};        // keyed sfx clips
+    this.sounds = {};        // keyed sfx clips: dhol, firecracker
     this.enabled = false;    // global on/off
-    this.volume = 0.7;       // sfx volume
+    this.volume = 0.75;      // sfx volume
     this.lastPlayTime = {};
-    this.minInterval = 1000;
-
-    // Background music
-    this.bgMusic = null;
-    this.bgVolume = 0.25;
-    this.bgPlaying = false;
+    this.minInterval = 800;
 
     // Listeners so components can react to enable/disable externally
     this._listeners = new Set();
@@ -63,72 +58,29 @@ class AudioManager {
     } catch (_) {}
   }
 
-  /* ── Background music ──────────────────────────────── */
+  /* ── Background music (removed per user request) ──── */
 
-  initBgMusic(src = '/assets/audio/diwali-background.mp3') {
-    if (this.bgMusic) return; // already initialised
-    try {
-      const audio = new Audio(src);
-      audio.loop = true;
-      audio.volume = this.bgVolume;
-      this.bgMusic = audio;
-    } catch (e) {
-      console.warn('Background music init failed:', e);
-    }
+  initBgMusic() {
+    // Background song removed
   }
 
-  /**
-   * Start background music. Returns a promise so callers can
-   * catch autoplay-policy failures gracefully.
-   */
-  async startBgMusic(src = '/assets/audio/diwali-background.mp3') {
-    if (!this.bgMusic) {
-      this.initBgMusic(src);
-    }
-    if (!this.bgMusic) return false;
-    try {
-      this.bgMusic.currentTime = 0;
-      await this.bgMusic.play();
-      this.bgPlaying = true;
-      if (typeof window !== 'undefined') window.__AUDIO_BG_PLAYING__ = true;
-      return true;
-    } catch (e) {
-      console.warn('Background music could not start:', e);
-      return false;
-    }
+  async startBgMusic() {
+    // Background song removed
+    return false;
   }
 
   pauseBgMusic() {
-    if (this.bgMusic && this.bgPlaying) {
-      this.bgMusic.pause();
-      this.bgPlaying = false;
-      if (typeof window !== 'undefined') window.__AUDIO_BG_PLAYING__ = false;
-    }
+    // Background song removed
   }
 
   resumeBgMusic() {
-    if (!this.bgMusic) {
-      this.initBgMusic();
-    }
-    if (this.bgMusic && !this.bgPlaying && this.enabled) {
-      this.bgMusic.play().then(() => {
-        this.bgPlaying = true;
-        if (typeof window !== 'undefined') window.__AUDIO_BG_PLAYING__ = true;
-      }).catch((e) => {
-        console.warn('Resume bgMusic failed:', e);
-      });
-    }
+    // Background song removed
   }
 
   /* ── Global enable / disable ───────────────────────── */
 
   setEnabled(val) {
     this.enabled = Boolean(val);
-    if (this.enabled) {
-      this.resumeBgMusic();
-    } else {
-      this.pauseBgMusic();
-    }
     this._notify(this.enabled);
   }
 
