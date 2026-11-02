@@ -49,11 +49,10 @@ export default function LoadingScreen({ progress = 0, onComplete }) {
 
         ctx.save();
         ctx.globalAlpha = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+        ctx.globalCompositeOperation = 'lighter';
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.shadowBlur = p.r * 4;
-        ctx.shadowColor = p.color;
         ctx.fill();
         ctx.restore();
       });
@@ -79,8 +78,8 @@ export default function LoadingScreen({ progress = 0, onComplete }) {
 
       if (currentPctRef.current < target) {
         // Smoothly pace progress so the festive bar animation is visually satisfying
-        const maxRate = 75; // 75% per second -> ~1.3s for 0 to 100
-        const step = Math.min(maxRate * dt, Math.max(0.4, (target - currentPctRef.current) * 0.12));
+        const maxRate = 85;
+        const step = Math.min(maxRate * dt, Math.max(0.5, (target - currentPctRef.current) * 0.16));
         currentPctRef.current = Math.min(target, currentPctRef.current + step);
         setDisplayPct(Math.round(currentPctRef.current));
       }
@@ -89,7 +88,7 @@ export default function LoadingScreen({ progress = 0, onComplete }) {
         animationFrame = requestAnimationFrame(updateCounter);
       } else if (target >= 100 && currentPctRef.current >= 100 && !isCompletingRef.current) {
         isCompletingRef.current = true;
-        // Pause briefly at 100% so user sees completion, then fade out
+        // Brief pause at 100%, then smooth cinematic fade-out into home page
         setTimeout(() => {
           if (!screenRef.current) {
             onComplete?.();
@@ -98,11 +97,11 @@ export default function LoadingScreen({ progress = 0, onComplete }) {
           gsap.to(screenRef.current, {
             opacity: 0,
             scale: 1.02,
-            duration: 0.65,
+            duration: 0.5,
             ease: 'power2.inOut',
             onComplete: () => onComplete?.(),
           });
-        }, 350);
+        }, 220);
       }
     };
 
@@ -125,7 +124,7 @@ export default function LoadingScreen({ progress = 0, onComplete }) {
         if (screenRef.current) {
           gsap.to(screenRef.current, {
             opacity: 0,
-            duration: 0.5,
+            duration: 0.45,
             ease: 'power2.inOut',
             onComplete: () => onComplete?.(),
           });
@@ -133,7 +132,7 @@ export default function LoadingScreen({ progress = 0, onComplete }) {
           onComplete?.();
         }
       }
-    }, 4500);
+    }, 3200);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import EntryScreen      from './components/EntryScreen';
+import LoadingScreen    from './components/LoadingScreen';
 import MusicController  from './components/MusicController';
 import HeroSection      from './components/HeroSection';
 import MagicSection     from './components/MagicSection';
@@ -51,19 +51,16 @@ function checkAudio(src) {
 
 // ── App ────────────────────────────────────────────────────
 export default function App() {
-  // Unified application state flow:
-  // 'entry' → Single unified Diwali Entry Screen (combines loading progress, welcome text & sound selection)
-  // 'main'  → Full interactive Diwali celebration website
-  const [phase, setPhase] = useState('entry');
+  // Application state flow:
+  // 'loading' → Festive Diwali Loading Screen (animated Diya, golden progress bar 0-100%)
+  // 'main'    → Main Diwali home page (automatically revealed upon loading completion)
+  const [phase, setPhase] = useState('loading');
 
   // Loading progress percentage (0 - 100) reflecting real asset readiness
   const [loadingProgress, setLoadingProgress] = useState(0);
 
-  // Asset readiness flag to enable buttons or process pre-selected sound choices
-  const [assetsReady, setAssetsReady] = useState(false);
-
-  // The user's chosen audio preference from EntryScreen
-  const [soundEnabled, setSoundEnabled] = useState(false);
+  // Sound effects enabled by default (Dhol and Fireworks)
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
   // Image asset availability
   const [assets, setAssets] = useState({ diya: null, dhol: null });
@@ -133,10 +130,11 @@ export default function App() {
     };
   }, []);
 
-  // ── Handler: visitor entered into main celebration ────────
-  const handleEnter = useCallback(({ withSound }) => {
-    console.log('[App] handleEnter called! withSound:', withSound);
-    setSoundEnabled(withSound);
+  // ── Handler: loading finished -> transition automatically to main website
+  const handleLoadingComplete = useCallback(() => {
+    console.log('[App] Loading complete! Opening main celebration...');
+    audioManager.setEnabled(true);
+    setSoundEnabled(true);
     setPhase('main');
   }, []);
 
@@ -174,12 +172,11 @@ export default function App() {
   // ── RENDER ───────────────────────────────────────────────
   return (
     <>
-      {/* 1. Unified Entry Screen: combines loading progress & sound selection */}
-      {phase === 'entry' && (
-        <EntryScreen
+      {/* 1. Dedicated Diwali Loading Page: loads progress 0-100% and auto-opens main website */}
+      {phase === 'loading' && (
+        <LoadingScreen
           progress={loadingProgress}
-          assetsReady={assetsReady}
-          onEnter={handleEnter}
+          onComplete={handleLoadingComplete}
         />
       )}
 
